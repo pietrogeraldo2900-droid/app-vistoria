@@ -1,0 +1,752 @@
+{
+  "generated_at": "2026-04-01",
+  "source": "chat_bruto_usuario",
+  "official_priority": [
+    "docs/prt_rules.md",
+    "data/prt_templates.json",
+    "data/inspection_items.json"
+  ],
+  "notes": [
+    "Este arquivo e candidato de implementacao, nao fonte homologada final.",
+    "approved=false significa pendente de validacao tecnica/homologacao."
+  ],
+  "glossary": [
+    {
+      "sigla": "PRT",
+      "descricao": "Padronizacao de Relatorio Tecnico"
+    },
+    {
+      "sigla": "SPK",
+      "descricao": "Chuveiros automaticos / sprinklers"
+    },
+    {
+      "sigla": "IE",
+      "descricao": "Iluminacao de emergencia"
+    },
+    {
+      "sigla": "AM",
+      "descricao": "Acionador manual"
+    },
+    {
+      "sigla": "DF",
+      "descricao": "Detector de fumaca"
+    },
+    {
+      "sigla": "PCF",
+      "descricao": "Porta corta-fogo"
+    },
+    {
+      "sigla": "VGA",
+      "descricao": "Valvula de governo e alarme"
+    },
+    {
+      "sigla": "RTI",
+      "descricao": "Reserva tecnica de incendio"
+    },
+    {
+      "sigla": "SDAI",
+      "descricao": "Sistema de deteccao e alarme de incendio"
+    }
+  ],
+  "status_candidates": [
+    {
+      "codigo_status": "CONFORME",
+      "mapped_mvp_status": "conforme",
+      "approved": false
+    },
+    {
+      "codigo_status": "NAO_CONFORME",
+      "mapped_mvp_status": "nao_conforme",
+      "approved": false
+    },
+    {
+      "codigo_status": "EM_MANUTENCAO",
+      "mapped_mvp_status": "em_manutencao",
+      "approved": false
+    },
+    {
+      "codigo_status": "SEM_ACESSO",
+      "mapped_mvp_status": "sem_acesso",
+      "approved": false
+    },
+    {
+      "codigo_status": "PENDENTE_TESTE",
+      "mapped_mvp_status": "nao_testado",
+      "approved": false
+    },
+    {
+      "codigo_status": "EM_REGULARIZACAO",
+      "mapped_mvp_status": null,
+      "approved": false
+    },
+    {
+      "codigo_status": "NAO_SE_APLICA",
+      "mapped_mvp_status": null,
+      "approved": false
+    }
+  ],
+  "homologated_candidates": [
+    {
+      "codigo": "SINAL_001",
+      "categoria": "Sinalizacao",
+      "subcategoria": "Geral",
+      "item": "Sinalizacao geral",
+      "status": "nao_conforme",
+      "rule": "sinalizacao_generica",
+      "state": "SP",
+      "template": "Local - Devera ser realizada a sinalizacao conforme a norma no que tange a informacoes, modelo fotoluminescente, com indicacao de nome/CNPJ do fabricante, tempo de atenuacao e intensidade luminosa, conforme IT 20/2025.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "SINAL_002",
+      "categoria": "Sinalizacao",
+      "subcategoria": "Extintores",
+      "item": "Sinalizacao do extintor de po",
+      "status": "nao_conforme",
+      "rule": "sinalizacao_extintor_po",
+      "state": "SP",
+      "template": "Local - Devera ser instalada a sinalizacao do extintor de po, conforme a norma no que tange a informacoes, modelo fotoluminescente, com indicacao de nome/CNPJ do fabricante, tempo de atenuacao e intensidade luminosa, conforme IT 20/2025.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "EXT_001",
+      "categoria": "Extintores",
+      "subcategoria": "Conformidade",
+      "item": "Extintores em conformidade",
+      "status": "conforme",
+      "rule": null,
+      "state": "SP",
+      "template": "Local - Os extintores estao em conformidade com os requisitos estabelecidos na IT 21/2025 do Corpo de Bombeiros, atendendo aos criterios de pressurizacao, lacre de seguranca, prazo de validade e identificacao do selo de recarga do INMETRO.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "EXT_002",
+      "categoria": "Extintores",
+      "subcategoria": "Lacre",
+      "item": "Extintores sem lacre",
+      "status": "nao_conforme",
+      "rule": "sem_lacre",
+      "state": "SP",
+      "template": "Local - Todos os extintores devem estar lacrados, com a pressao adequada para garantir seu devido funcionamento, conforme IT 21/2025.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "EXT_003",
+      "categoria": "Extintores",
+      "subcategoria": "Validade",
+      "item": "Validade vigente",
+      "status": "conforme",
+      "rule": "validade_vigente",
+      "state": "SP",
+      "template": "Local - Os extintores de combate a incendio possuem selo de recarga INMETRO com indicacao de validade ate [mes/ano].",
+      "uses_variables": [
+        "mes_ano"
+      ],
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "EXT_004",
+      "categoria": "Extintores",
+      "subcategoria": "Validade",
+      "item": "Validade vencida",
+      "status": "nao_conforme",
+      "rule": "validade_vencida",
+      "state": "SP",
+      "template": "Local - Os extintores de combate a incendio possuem selo de recarga INMETRO com indicacao VENCIDA em [mes/ano].",
+      "uses_variables": [
+        "mes_ano"
+      ],
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "IE_001",
+      "categoria": "Iluminacao de emergencia",
+      "subcategoria": "Conformidade",
+      "item": "IE em conformidade",
+      "status": "conforme",
+      "rule": null,
+      "state": "SP",
+      "template": "Local - A iluminacao de emergencia (IE) esta em conformidade com os requisitos da IT 18/2025 do Corpo de Bombeiros, garantindo o adequado funcionamento em situacoes de falta de energia.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "SDAI_001",
+      "categoria": "SDAI",
+      "subcategoria": "Detector de fumaca",
+      "item": "Instalacao de detector de fumaca",
+      "status": "nao_conforme",
+      "rule": null,
+      "state": "SP",
+      "template": "Local - Devera ser feita a instalacao de detector de fumaca, conforme IT 19/2025 do Corpo de Bombeiros.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "HID_001",
+      "categoria": "Hidrantes",
+      "subcategoria": "Abrigo/itens obrigatorios",
+      "item": "Hidrante incompleto / nao conforme",
+      "status": "nao_conforme",
+      "rule": "abrigo_incompleto",
+      "state": "SP",
+      "template": "Local - O hidrante devera ser regularizado, pois o abrigo encontra-se incompleto, faltando os seguintes itens obrigatorios: esguicho regulavel e chave Storz, alem da ausencia da sinalizacao. A ausencia desses itens compromete a eficacia do sistema de combate a incendio e deve ser corrigida para atender as normas de seguranca aplicaveis, conforme a IT 22/2025 e 20/2025 e do Corpo de Bombeiros.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "HID_002",
+      "categoria": "Hidrantes",
+      "subcategoria": "Conformidade",
+      "item": "Hidrante em conformidade",
+      "status": "conforme",
+      "rule": null,
+      "state": "SP",
+      "template": "Local - O hidrante encontra-se em conformidade, com todos os itens obrigatorios presentes no abrigo: esguicho regulavel, mangueira com teste hidrostatico valido, chave Storz e registro. Alem disso, a sinalizacao esta instalada de forma adequada. O conjunto atende aos requisitos estabelecidos pela IT 22/2025 e IT 20/2025 do Corpo de Bombeiros.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "HID_003",
+      "categoria": "Hidrantes",
+      "subcategoria": "Mangueira",
+      "item": "Mangueira com teste hidrostatico valido",
+      "status": "conforme",
+      "rule": "mangueira_teste_hidrostatico_valido",
+      "state": "SP",
+      "template": "Local - Mangueira possui teste hidrostatico VALIDO ate [mes/ano].",
+      "uses_variables": [
+        "mes_ano"
+      ],
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "SHAFT_001",
+      "categoria": "Compartimentacao / acesso",
+      "subcategoria": "Shaft",
+      "item": "Shaft de incendio obstruido",
+      "status": "nao_conforme",
+      "rule": null,
+      "state": "SP",
+      "template": "Local - O shaft de incendio devera ser desobstruido, garantindo livre acesso aos equipamentos e dispositivos de combate a incendio, conforme as exigencias da IT 22/2025 do Corpo de Bombeiros.",
+      "source": "homologado",
+      "approved": true
+    },
+    {
+      "codigo": "SPK_001",
+      "categoria": "Sprinklers / SDAI",
+      "subcategoria": "Instalacao",
+      "item": "Instalacao de SPK e detector de fumaca",
+      "status": "nao_conforme",
+      "rule": "spk_detector_fumaca",
+      "state": "SP",
+      "template": "Local - Devera efetuar a instalacao de chuveiros automaticos (SPK), conforme parametros da NBR 10897 e IT 23/2025 do Corpo de Bombeiros. Alem disso, devera ser feita a instalacao de detector de fumaca, conforme IT 19/2025 do Corpo de Bombeiros.",
+      "source": "homologado",
+      "approved": true
+    }
+  ],
+  "recurring_candidates": [
+    {
+      "codigo": "SDAI_010",
+      "categoria": "SDAI",
+      "item": "Central de alarme em manutencao",
+      "status_hint": "em_manutencao",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_011",
+      "categoria": "SDAI",
+      "item": "Central de alarme com falha",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_012",
+      "categoria": "SDAI",
+      "item": "Acionador manual comunicando",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_013",
+      "categoria": "SDAI",
+      "item": "Acionador manual nao comunicando",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_014",
+      "categoria": "SDAI",
+      "item": "Detector de fumaca comunicando",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_015",
+      "categoria": "SDAI",
+      "item": "Detector de fumaca nao comunicando",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_016",
+      "categoria": "SDAI",
+      "item": "Sirene funcionando e acusada na central",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_017",
+      "categoria": "SDAI",
+      "item": "Chave de fluxo acusou na central",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_018",
+      "categoria": "SDAI",
+      "item": "Central nao acusou chave de fluxo",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_019",
+      "categoria": "SDAI",
+      "item": "Eletroima integrado ao sistema de alarme",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SDAI_020",
+      "categoria": "SDAI",
+      "item": "Teste de integracao pendente por agendamento",
+      "status_hint": "nao_testado",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_010",
+      "categoria": "Hidrantes",
+      "item": "Hidrante com pressao adequada",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_011",
+      "categoria": "Hidrantes",
+      "item": "Hidrante com pressao fraca",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_012",
+      "categoria": "Hidrantes",
+      "item": "Rede pressurizada",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_013",
+      "categoria": "Hidrantes",
+      "item": "Rede despressurizada",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_014",
+      "categoria": "Hidrantes",
+      "item": "Registro de recalque avariado",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_015",
+      "categoria": "Hidrantes",
+      "item": "Necessidade de instalacao de adaptador tipo Storz no recalque",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_016",
+      "categoria": "Hidrantes",
+      "item": "Instalacao preferencial de adaptador tipo Storz soldado para mitigar furtos",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_017",
+      "categoria": "Hidrantes",
+      "item": "Abrigo do hidrante sujo / necessidade de limpeza",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_018",
+      "categoria": "Hidrantes",
+      "item": "Cavalete do hidrante necessitando limpeza",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_019",
+      "categoria": "Hidrantes",
+      "item": "Necessidade de colocacao de brita",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_020",
+      "categoria": "Hidrantes",
+      "item": "Necessidade de reforco de pintura",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_021",
+      "categoria": "Hidrantes",
+      "item": "Manometros com leitura divergente",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_022",
+      "categoria": "Hidrantes",
+      "item": "Necessidade de calibrar manometros para o mesmo valor",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "HID_023",
+      "categoria": "Hidrantes",
+      "item": "Valvula de retencao permitindo retorno",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "BOM_001",
+      "categoria": "Bombas de incendio",
+      "item": "Bomba jockey ligando e desligando intermitentemente ate atingir a pressao",
+      "status_hint": null,
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "BOM_002",
+      "categoria": "Bombas de incendio",
+      "item": "Bombas funcionando corretamente no automatico",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "BOM_003",
+      "categoria": "Bombas de incendio",
+      "item": "Bomba principal entrando apenas no manual",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "BOM_004",
+      "categoria": "Bombas de incendio",
+      "item": "Bombas com ar e sem pressurizacao da rede",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "BOM_005",
+      "categoria": "Bombas de incendio",
+      "item": "Sistema sem protecao adequada contra intemperies",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SPK_010",
+      "categoria": "SPK / Sprinklers",
+      "item": "Rede de SPK em conformidade",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SPK_011",
+      "categoria": "SPK / Sprinklers",
+      "item": "Necessidade de instalacao de chuveiros automaticos",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SPK_012",
+      "categoria": "SPK / Sprinklers",
+      "item": "Chuveiros automaticos com altura inadequada",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SPK_013",
+      "categoria": "SPK / Sprinklers",
+      "item": "Tubulacao de SPK necessitando identificacao/demarcacao",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SINAL_010",
+      "categoria": "Sinalizacao",
+      "item": "Necessidade de sinalizacao de rota de fuga",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SINAL_011",
+      "categoria": "Sinalizacao",
+      "item": "Necessidade de sinalizacao de saidas",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SINAL_012",
+      "categoria": "Sinalizacao",
+      "item": "Sinalizacao de extintor em todas as faces do pilar",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "SINAL_013",
+      "categoria": "Sinalizacao",
+      "item": "Sinalizacao fotoluminescente ausente",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "IE_010",
+      "categoria": "Iluminacao de emergencia",
+      "item": "Iluminacao de emergencia inoperante",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "IE_011",
+      "categoria": "Iluminacao de emergencia",
+      "item": "Iluminacao de emergencia ausente",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "IE_012",
+      "categoria": "Iluminacao de emergencia",
+      "item": "Iluminacao de emergencia parcialmente funcional",
+      "status_hint": null,
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "PCF_001",
+      "categoria": "PCF / Compartimentacao",
+      "item": "Porta corta-fogo necessitando regulagem",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "PCF_002",
+      "categoria": "PCF / Compartimentacao",
+      "item": "Porta corta-fogo sem fechamento adequado",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "PCF_003",
+      "categoria": "PCF / Compartimentacao",
+      "item": "Verificar integracao do eletroima da porta com o sistema de alarme",
+      "status_hint": null,
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "PCF_004",
+      "categoria": "PCF / Compartimentacao",
+      "item": "Compartimentacao inadequada de shaft",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "ESC_001",
+      "categoria": "Escadas / Pressurizacao",
+      "item": "Pressurizacao da escada acionou apos o disparo",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "ESC_002",
+      "categoria": "Escadas / Pressurizacao",
+      "item": "Necessidade de ajuste para acionamento em t=0 apos reset da central",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "TUB_001",
+      "categoria": "Tubulacao / Pintura / Identificacao",
+      "item": "Necessidade de demarcacao da tubulacao de combate a incendio na cor vermelha",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "TUB_002",
+      "categoria": "Tubulacao / Pintura / Identificacao",
+      "item": "Tubulacao sem identificacao adequada",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "OPS_001",
+      "categoria": "Acesso / Obstrucao / Condicao operacional",
+      "item": "Area de hidrante desobstruida",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "OPS_002",
+      "categoria": "Acesso / Obstrucao / Condicao operacional",
+      "item": "Area de extintor desobstruida",
+      "status_hint": "conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "OPS_003",
+      "categoria": "Acesso / Obstrucao / Condicao operacional",
+      "item": "Area obstruida",
+      "status_hint": "nao_conforme",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "OPS_004",
+      "categoria": "Acesso / Obstrucao / Condicao operacional",
+      "item": "Nao foi possivel acessar a sala",
+      "status_hint": "sem_acesso",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "OPS_005",
+      "categoria": "Acesso / Obstrucao / Condicao operacional",
+      "item": "Acesso impedido por reuniao / obra / condicao operacional",
+      "status_hint": "sem_acesso",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    },
+    {
+      "codigo": "OPS_006",
+      "categoria": "Acesso / Obstrucao / Condicao operacional",
+      "item": "Teste nao realizado por indisponibilidade operacional",
+      "status_hint": "nao_testado",
+      "template": null,
+      "source": "recorrente",
+      "approved": false
+    }
+  ]
+}

@@ -80,5 +80,119 @@ describe("prtEngine.generate", () => {
     expect(output.text).toBe("");
     expect(output.technicalPendingReason).toBe(MISSING_HOMOLOGATED_TEMPLATE_REASON);
   });
-});
 
+  it("prioriza template de validade vigente para extintor conforme", () => {
+    const output = prtEngine.generate({
+      itemKey: "extintor",
+      status: "conforme",
+      state: "SP",
+      locationName: "G1",
+      fieldValues: {
+        validade_recarga: "08/2027"
+      }
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toBe(
+      "Galpão 1 - Os extintores de combate a incêndio possuem selo de recarga INMETRO com indicação de validade até 08/2027."
+    );
+  });
+
+  it("prioriza sem_lacre sobre validade_vencida em extintor nao conforme", () => {
+    const output = prtEngine.generate({
+      itemKey: "extintor",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Casa de bombas",
+      fieldValues: {
+        lacrado: "nao",
+        validade_recarga: "01/2025"
+      }
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toContain("Todos os extintores devem estar lacrados");
+    expect(output.text).not.toContain("indicação VENCIDA");
+  });
+
+  it("usa template de validade vencida para extintor nao conforme quando aplicavel", () => {
+    const output = prtEngine.generate({
+      itemKey: "extintor",
+      status: "nao_conforme",
+      state: "RJ",
+      locationName: "Sala tecnica",
+      fieldValues: {
+        lacrado: "sim",
+        validade_recarga: "01/2025"
+      }
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toBe(
+      "Sala tecnica - Os extintores de combate a incêndio possuem selo de recarga INMETRO com indicação VENCIDA em 01/2025."
+    );
+  });
+
+  it("usa regra de mangueira no hidrante conforme quando houver [mes/ano]", () => {
+    const output = prtEngine.generate({
+      itemKey: "hidrante",
+      status: "conforme",
+      state: "SP",
+      locationName: "G2",
+      fieldValues: {
+        mangueira_teste_hidrostatico_validade: "09/2028"
+      }
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toBe("Galpão 2 - Mangueira possui teste hidrostático VÁLIDO até 09/2028.");
+  });
+
+  it("usa regra SPK + detector de fumaca no nao conforme", () => {
+    const output = prtEngine.generate({
+      itemKey: "spk",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Galpao 3",
+      fieldValues: {}
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toContain("chuveiros automáticos (SPK)");
+    expect(output.text).toContain("instalação de detector de fumaça");
+    expect(output.text).toContain("IT 23/2025");
+    expect(output.text).toContain("IT 19/2025");
+  });
+
+  it("usa texto homologado completo de sinalizacao generica", () => {
+    const output = prtEngine.generate({
+      itemKey: "sinalizacao",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Corredor 1",
+      fieldValues: {}
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toContain("nome/CNPJ do fabricante");
+    expect(output.text).toContain("IT 20/2025");
+  });
+
+  it("usa regra de sinalizacao do extintor de po quando campo explicito for sim", () => {
+    const output = prtEngine.generate({
+      itemKey: "sinalizacao",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Hall",
+      fieldValues: {
+        instalada: "nao",
+        tipo_fotoluminescente: "nao",
+        sinalizacao_extintor_po: "sim"
+      }
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toContain("sinalização do extintor de pó");
+    expect(output.text).toContain("IT 20/2025");
+  });
+});

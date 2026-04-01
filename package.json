@@ -14,7 +14,11 @@
     "preview": "vite preview",
     "audit:pack": "node ./scripts/audit-pack.mjs",
     "audit:pack:node": "node ./scripts/audit-pack.mjs --keep-temp",
-    "audit:pack:ps": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/audit-pack.ps1 -KeepTemp"
+    "audit:pack:ps": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/audit-pack.ps1 -KeepTemp",
+    "prt:zip-review": "node ./scripts/prt-zip-review.mjs",
+    "prt:zip-merge": "node ./scripts/prt-zip-merge-suggested.mjs",
+    "prt:phase2:homologate": "node ./scripts/prt-phase2-homologate.mjs",
+    "prt:phase2:validate": "node ./scripts/prt-phase2-validate.mjs"
   },
   "keywords": [
     "vistoria",

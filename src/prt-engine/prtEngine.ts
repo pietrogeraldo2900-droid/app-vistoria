@@ -29,6 +29,11 @@ const resolveRule = (
   status: InspectionStatus,
   fieldValues: InspectionFieldValues
 ): string | undefined => {
+  const hasMonthYear = (fieldName: string): boolean => {
+    const value = fieldValues[fieldName];
+    return typeof value === "string" && value.trim().length > 0;
+  };
+
   if (
     itemKey === "extintor" &&
     status === "nao_conforme" &&
@@ -38,11 +43,47 @@ const resolveRule = (
   }
 
   if (
+    itemKey === "extintor" &&
+    status === "conforme" &&
+    hasMonthYear("validade_recarga")
+  ) {
+    return "validade_vigente";
+  }
+
+  if (
+    itemKey === "extintor" &&
+    status === "nao_conforme" &&
+    hasMonthYear("validade_recarga")
+  ) {
+    return "validade_vencida";
+  }
+
+  if (
     itemKey === "hidrante" &&
     status === "nao_conforme" &&
     fieldValues.abrigo_incompleto === "sim"
   ) {
     return "abrigo_incompleto";
+  }
+
+  if (
+    itemKey === "hidrante" &&
+    status === "conforme" &&
+    hasMonthYear("mangueira_teste_hidrostatico_validade")
+  ) {
+    return "mangueira_teste_hidrostatico_valido";
+  }
+
+  if (
+    itemKey === "sinalizacao" &&
+    status === "nao_conforme" &&
+    fieldValues.sinalizacao_extintor_po === "sim"
+  ) {
+    return "sinalizacao_extintor_po";
+  }
+
+  if (itemKey === "spk" && status === "nao_conforme") {
+    return "spk_detector_fumaca";
   }
 
   return undefined;

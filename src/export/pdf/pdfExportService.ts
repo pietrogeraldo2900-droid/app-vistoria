@@ -202,15 +202,50 @@ const blobToDataUrl = async (blob: Blob): Promise<string> => {
   return `data:${mimeType};base64,${base64}`;
 };
 
-const loadImageSize = (dataUrl: string): Promise<{ width: number; height: number } | null> => {
-  if (typeof Image === "undefined") {
-    return Promise.resolve(null);
+const createPdfCoverDataUrl = async (
+  dataUrl: string,
+  mimeType: string,
+  targetRatio: number
+): Promise<string> => {
+  if (typeof document === "undefined" || typeof Image === "undefined") {
+    return dataUrl;
   }
 
   return new Promise((resolve) => {
     const image = new Image();
-    image.onload = () => resolve({ width: image.width, height: image.height });
-    image.onerror = () => resolve(null);
+    image.onload = () => {
+      if (image.width <= 0 || image.height <= 0 || !Number.isFinite(targetRatio) || targetRatio <= 0) {
+        resolve(dataUrl);
+        return;
+      }
+
+      const canvasWidth = 1200;
+      const canvasHeight = Math.max(1, Math.round(canvasWidth / targetRatio));
+      const canvas = document.createElement("canvas");
+      canvas.width = canvasWidth;
+      canvas.height = canvasHeight;
+
+      const context = canvas.getContext("2d");
+      if (!context) {
+        resolve(dataUrl);
+        return;
+      }
+
+      const scale = Math.max(canvasWidth / image.width, canvasHeight / image.height);
+      const renderWidth = image.width * scale;
+      const renderHeight = image.height * scale;
+      const offsetX = (canvasWidth - renderWidth) / 2;
+      const offsetY = (canvasHeight - renderHeight) / 2;
+
+      context.drawImage(image, offsetX, offsetY, renderWidth, renderHeight);
+
+      const format = resolveImageFormat(mimeType);
+      const outputMimeType = format === "PNG" ? "image/png" : "image/jpeg";
+      resolve(
+        canvas.toDataURL(outputMimeType, format === "PNG" ? undefined : 0.9)
+      );
+    };
+    image.onerror = () => resolve(dataUrl);
     image.src = dataUrl;
   });
 };
@@ -466,36 +501,20 @@ export const pdfExportService = {
         doc.rect(imageX, imageY, imageWidth, imageHeight, "F");
 
         try {
-          const imageSize = await loadImageSize(evidence.photoDataUrl);
-          if (imageSize && imageSize.width > 0 && imageSize.height > 0) {
-            const scale = Math.min(
-              imageWidth / imageSize.width,
-              imageHeight / imageSize.height
-            );
+          const coverDataUrl = await createPdfCoverDataUrl(
+            evidence.photoDataUrl,
+            evidence.mimeType,
+            imageWidth / imageHeight
+          );
 
-            const renderWidth = imageSize.width * scale;
-            const renderHeight = imageSize.height * scale;
-            const renderX = imageX + (imageWidth - renderWidth) / 2;
-            const renderY = imageY + (imageHeight - renderHeight) / 2;
-
-            doc.addImage(
-              evidence.photoDataUrl,
-              resolveImageFormat(evidence.mimeType),
-              renderX,
-              renderY,
-              renderWidth,
-              renderHeight
-            );
-          } else {
-            doc.addImage(
-              evidence.photoDataUrl,
-              resolveImageFormat(evidence.mimeType),
-              imageX,
-              imageY,
-              imageWidth,
-              imageHeight
-            );
-          }
+          doc.addImage(
+            coverDataUrl,
+            resolveImageFormat(evidence.mimeType),
+            imageX,
+            imageY,
+            imageWidth,
+            imageHeight
+          );
         } catch {
           doc.setTextColor(142, 142, 142);
           doc.setFont("helvetica", "normal");

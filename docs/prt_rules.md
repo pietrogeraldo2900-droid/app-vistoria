@@ -294,3 +294,12 @@ Campos obrigatorios passam a depender da combinacao item + status, e devem ser e
 Se nao existir template homologado para a combinacao item + status + estado, o cadastro deve ser bloqueado como pendencia tecnica interna.
 
 Esse caso nao deve aparecer como texto final no relatorio.
+
+### 11.4 Regra explicita para sinalizacao de extintor de po
+Para o item `sinalizacao` em status `nao_conforme`, o fluxo deve usar o campo
+complementar `sinalizacao_extintor_po` para selecionar o template:
+
+- `sinalizacao_extintor_po = sim` -> aplicar `rule: sinalizacao_extintor_po`
+- `sinalizacao_extintor_po = nao` -> aplicar template generico de sinalizacao
+
+O campo deve ser exigido no cadastro/edicao para evitar ambiguidade.

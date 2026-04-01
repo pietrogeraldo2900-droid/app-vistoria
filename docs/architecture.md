@@ -18,6 +18,26 @@ Implementar um app mobile-first de vistoria tecnica com geracao automatica de PR
 - `src/domain`: modelos de dados e utilitarios de dominio.
 - `backend`: API Node/Express para integracao remota real por fatias.
 
+## Governanca de catalogo candidato de PRT
+- `data/prt_catalog_candidates.json` e tratado como base de trabalho para evolucao por fases.
+- `src/services/prt-catalog/candidateCatalogService.ts` faz normalizacao tecnica dos candidatos:
+  - status mapeados vs status suportados no MVP
+  - templates homologados candidatos com formato `Local - texto`
+  - deteccao de chaves de template duplicadas
+- `src/services/prt-catalog/candidateTemplateMergeService.ts` gera plano de merge:
+  - `sameAsOfficial`
+  - `pendingConflicts`
+  - `approvedConflicts`
+  - `pendingCreates`
+  - `approvedCreates`
+- Regras de seguranca:
+  - candidato sem `approved=true` nunca entra em merge aplicado
+  - conflito sem aprovacao explicita nao sobrescreve template oficial
+  - engine principal continua baseada em `data/prt_templates.json`
+- Rotina de homologacao fase 2:
+  - `npm run prt:phase2:homologate` aplica patch controlado
+  - `npm run prt:phase2:validate` valida aprovacoes, chaves e templates esperados
+
 ## Persistencia por contrato
 - `src/persistence/contracts`: interfaces de repositorio para auth, vistoria e fotos.
 - `src/persistence/local`: implementacoes locais atuais (MVP).

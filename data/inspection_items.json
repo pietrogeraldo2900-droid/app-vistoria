@@ -73,7 +73,8 @@
       "label": "Sinalizacao",
       "fields": [
         "instalada",
-        "tipo_fotoluminescente"
+        "tipo_fotoluminescente",
+        "sinalizacao_extintor_po"
       ]
     },
     {

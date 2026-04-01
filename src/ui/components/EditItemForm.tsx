@@ -37,6 +37,7 @@ const fieldLabelMap: Record<string, string> = {
   instalado: "Instalado",
   funcionamento_ok: "Funcionamento OK",
   tipo_fotoluminescente: "Tipo fotoluminescente",
+  sinalizacao_extintor_po: "Sinalizacao do extintor de po",
   instalada: "Instalada",
   obstruido: "Obstruido",
   painel_ativo: "Painel ativo",

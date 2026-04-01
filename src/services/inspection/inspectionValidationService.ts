@@ -127,7 +127,11 @@ const itemRules: Record<string, ItemValidationRule> = {
   sinalizacao: {
     requiredByStatus: {
       conforme: ["instalada", "tipo_fotoluminescente"],
-      nao_conforme: ["instalada", "tipo_fotoluminescente"]
+      nao_conforme: [
+        "instalada",
+        "tipo_fotoluminescente",
+        "sinalizacao_extintor_po"
+      ]
     },
     conformExpectations: {
       instalada: "sim",

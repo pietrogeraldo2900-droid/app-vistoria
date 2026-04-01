@@ -18,6 +18,17 @@ describe("inspectionValidationService", () => {
     );
   });
 
+  it("exige campo explicito para diferenciar sinalizacao generica vs extintor de po", () => {
+    const required = inspectionValidationService.getRequiredFields(
+      "sinalizacao",
+      "nao_conforme"
+    );
+
+    expect(required).toEqual(
+      expect.arrayContaining(["instalada", "tipo_fotoluminescente", "sinalizacao_extintor_po"])
+    );
+  });
+
   it("bloqueia conforme quando criterio minimo nao e atendido", () => {
     const result = inspectionValidationService.validateItemInput({
       itemKey: "extintor",
@@ -59,6 +70,28 @@ describe("inspectionValidationService", () => {
       result.issues.some(
         (issue) =>
           issue.code === "required_field_missing" && issue.field === "validade_recarga"
+      )
+    ).toBe(true);
+  });
+
+  it("bloqueia sinalizacao nao_conforme sem campo explicito de regra", () => {
+    const result = inspectionValidationService.validateItemInput({
+      itemKey: "sinalizacao",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Corredor",
+      fieldValues: {
+        instalada: "nao",
+        tipo_fotoluminescente: "nao"
+      }
+    });
+
+    expect(result.isValid).toBe(false);
+    expect(
+      result.issues.some(
+        (issue) =>
+          issue.code === "required_field_missing" &&
+          issue.field === "sinalizacao_extintor_po"
       )
     ).toBe(true);
   });
@@ -111,4 +144,3 @@ describe("inspectionValidationService", () => {
     expect(result.issues).toHaveLength(0);
   });
 });
-
