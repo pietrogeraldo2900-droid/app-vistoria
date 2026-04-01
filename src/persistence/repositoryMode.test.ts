@@ -96,6 +96,7 @@ describe("repositoryMode", () => {
 
   it("permite override por variavel de ambiente por dominio", async () => {
     vi.stubEnv("VITE_REPOSITORY_MODE", "local");
+    vi.stubEnv("VITE_REPOSITORY_MODE_AUTH", "local");
     vi.stubEnv("VITE_REPOSITORY_MODE_INSPECTION", "remote");
     vi.resetModules();
 

@@ -1,10 +1,21 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+﻿import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { InspectionRecord, ReportLine } from "@/domain/types/inspection";
-import { pdfExportService } from "@/export/pdf/pdfExportService";
 
 const pdfMockState = vi.hoisted(() => ({
   savedFiles: [] as string[],
-  textCalls: [] as string[]
+  textCalls: [] as string[],
+  addImageCalls: [] as Array<{ x: number; y: number; width: number; height: number }>,
+  addPageCalls: 0
+}));
+
+const photoRepositoryMock = vi.hoisted(() => ({
+  get: vi.fn()
+}));
+
+vi.mock("@/persistence/photoRepository", () => ({
+  photoRepository: {
+    get: photoRepositoryMock.get
+  }
 }));
 
 vi.mock("jspdf", () => {
@@ -15,7 +26,9 @@ vi.mock("jspdf", () => {
       }
     };
 
-    addPage(): void {}
+    addPage(): void {
+      pdfMockState.addPageCalls += 1;
+    }
 
     setFillColor(..._args: number[]): void {}
 
@@ -35,6 +48,17 @@ vi.mock("jspdf", () => {
 
     roundedRect(..._args: number[]): void {}
 
+    addImage(
+      _data: string,
+      _format: string,
+      x: number,
+      y: number,
+      width: number,
+      height: number
+    ): void {
+      pdfMockState.addImageCalls.push({ x, y, width, height });
+    }
+
     splitTextToSize(content: string): string[] {
       return [content];
     }
@@ -46,6 +70,8 @@ vi.mock("jspdf", () => {
 
   return { jsPDF: MockJsPDF };
 });
+
+import { pdfExportService } from "@/export/pdf/pdfExportService";
 
 const createInspection = (): InspectionRecord => ({
   id: "inspection_1",
@@ -80,6 +106,9 @@ describe("pdfExportService", () => {
   beforeEach(() => {
     pdfMockState.savedFiles.length = 0;
     pdfMockState.textCalls.length = 0;
+    pdfMockState.addImageCalls.length = 0;
+    pdfMockState.addPageCalls = 0;
+    photoRepositoryMock.get.mockReset();
   });
 
   it("prepara payload para exportacao", () => {
@@ -153,5 +182,83 @@ describe("pdfExportService", () => {
     expect(pdfMockState.textCalls.some((entry) => entry.includes(finalLine2))).toBe(true);
     expect(pdfMockState.textCalls.some((entry) => entry.includes(pendingLine))).toBe(false);
   });
-});
 
+  it("inclui fotos sincronizadas em grid padronizado e avisa fotos nao sincronizadas", async () => {
+    const inspection = createInspection();
+    inspection.locations = [
+      {
+        id: "loc_1",
+        name: "Sala tecnica",
+        items: [
+          {
+            id: "item_1",
+            itemKey: "detector_fumaca",
+            status: "nao_conforme",
+            fieldValues: {},
+            generatedText:
+              "Sala tecnica - Devera ser feita a instalacao de detector de fumaca.",
+            createdAt: "2026-03-31T10:00:00.000Z",
+            photos: [
+              {
+                id: "photo_sync_1",
+                storageKey: "photo_sync_1",
+                name: "foto-sincronizada-1.jpg",
+                mimeType: "image/jpeg",
+                size: 1200,
+                syncStatus: "synced"
+              },
+              {
+                id: "photo_failed_1",
+                name: "foto-falha.jpg",
+                mimeType: "image/jpeg",
+                size: 1200,
+                syncStatus: "failed",
+                syncErrorMessage: "Falha de sincronizacao no upload."
+              },
+              {
+                id: "photo_sync_2",
+                storageKey: "photo_sync_2",
+                name: "foto-sincronizada-2.jpg",
+                mimeType: "image/jpeg",
+                size: 1300,
+                syncStatus: "synced"
+              }
+            ]
+          }
+        ]
+      }
+    ];
+
+    photoRepositoryMock.get.mockImplementation((storageKey: string) => {
+      if (storageKey === "photo_sync_1" || storageKey === "photo_sync_2") {
+        return Promise.resolve(new Blob(["fake-image"], { type: "image/jpeg" }));
+      }
+      return Promise.resolve(null);
+    });
+
+    const result = await pdfExportService.exportInspectionToPdf(
+      pdfExportService.preparePayload(inspection, [createBaseLine({})])
+    );
+
+    expect(result.exportedLines).toBe(1);
+    expect(photoRepositoryMock.get.mock.calls.map((call: unknown[]) => call[0])).toEqual([
+      "photo_sync_1",
+      "photo_sync_2"
+    ]);
+
+    expect(pdfMockState.addImageCalls).toHaveLength(2);
+    expect(pdfMockState.addImageCalls[0].width).toBeGreaterThan(0);
+    expect(pdfMockState.addImageCalls[0].height).toBeGreaterThan(0);
+    expect(pdfMockState.addImageCalls[0].width).toBe(pdfMockState.addImageCalls[1].width);
+    expect(pdfMockState.addImageCalls[0].height).toBe(pdfMockState.addImageCalls[1].height);
+
+    expect(
+      pdfMockState.textCalls.some((entry) =>
+        entry.includes("PENDENCIAS DE EVIDENCIA FOTOGRAFICA")
+      )
+    ).toBe(true);
+    expect(
+      pdfMockState.textCalls.some((entry) => entry.includes("foto-falha.jpg"))
+    ).toBe(true);
+  });
+});

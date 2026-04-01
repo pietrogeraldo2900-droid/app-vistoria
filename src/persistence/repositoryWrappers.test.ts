@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { authRepository } from "@/persistence/authRepository";
 import { inspectionRepository } from "@/persistence/inspectionRepository";
 import { photoRepository } from "@/persistence/photoRepository";
@@ -30,13 +30,19 @@ const createMemoryStorage = (): Storage => {
 
 describe("repository wrappers", () => {
   beforeEach(() => {
+    vi.stubEnv("VITE_API_BASE_URL", "");
     Object.defineProperty(globalThis, "window", {
       value: {
         localStorage: createMemoryStorage()
       },
       configurable: true
     });
+    repositoryMode.reset();
     repositoryMode.set("local", { persist: false });
+  });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
   });
 
   it("usa comportamento local por padrao", async () => {

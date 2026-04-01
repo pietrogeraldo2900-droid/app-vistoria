@@ -12,6 +12,7 @@ import { repositoryMode } from "@/persistence/repositoryMode";
 
 describe("repository factories", () => {
   beforeEach(() => {
+    repositoryMode.reset();
     repositoryMode.set("local", { persist: false });
   });
 

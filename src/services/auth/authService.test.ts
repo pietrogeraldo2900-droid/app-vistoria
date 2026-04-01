@@ -55,6 +55,7 @@ const loginAsDefaultAdmin = async () => {
 
 describe("authService", () => {
   beforeEach(async () => {
+    repositoryMode.reset();
     repositoryMode.set("local", { persist: false });
     installRuntimeMocks();
     await authService.bootstrap();

@@ -44,7 +44,7 @@ const readModeFromEnvVar = (envKey: string): RepositoryMode | null => {
   const importMetaEnv = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
   const processEnv =
     typeof process !== "undefined" ? (process.env as Record<string, string | undefined>) : undefined;
-  const mode = importMetaEnv?.[envKey] ?? processEnv?.[envKey];
+  const mode = processEnv?.[envKey] ?? importMetaEnv?.[envKey];
   if (!mode) {
     return null;
   }

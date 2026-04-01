@@ -20,11 +20,17 @@ const parseTimeout = (raw: string | undefined): number => {
   return parsed;
 };
 
+const readEnvValue = (key: string): string | undefined => {
+  const processEnv =
+    typeof process !== "undefined" ? (process.env as Record<string, string | undefined>) : undefined;
+  const importMetaEnv = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
+  return processEnv?.[key] ?? importMetaEnv?.[key];
+};
+
 const readEnvConfig = (): BackendGatewayConfig => {
-  const env = (import.meta as ImportMeta & { env?: Record<string, string | undefined> }).env;
   return {
-    baseUrl: env?.VITE_API_BASE_URL,
-    timeoutMs: parseTimeout(env?.VITE_API_TIMEOUT_MS)
+    baseUrl: readEnvValue("VITE_API_BASE_URL"),
+    timeoutMs: parseTimeout(readEnvValue("VITE_API_TIMEOUT_MS"))
   };
 };
 

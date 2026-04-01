@@ -122,6 +122,8 @@ Regra da exportacao:
 - pendencias tecnicas internas nao entram no texto final exportado
 - metadados enriquecidos da vistoria aparecem no cabecalho tecnico do PDF
 - apontamentos finais sao agrupados por local para leitura operacional
+- evidencias fotograficas entram em grid padronizado 2x2 com legenda (`Local | Item | Status | Data`)
+- fotos `pending` ou `failed` nao entram como evidencia final; entram em secao de pendencias de evidencia fotografica
 
 ## Pacote de auditoria
 Gerar pacote limpo para auditoria tecnica:

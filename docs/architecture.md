@@ -75,6 +75,8 @@ Adapters remotos no estado atual:
 - Exportacao real do relatorio consolidado em PDF a partir da tela de previa.
 - Exporta somente linhas finais homologadas (sem pendencias tecnicas internas).
 - Cabecalho com metadados completos da vistoria e organizacao dos apontamentos por local.
+- Evidencias fotograficas em grid 2x2 com dimensao padronizada e legenda por foto.
+- Fotos com `syncStatus` diferente de `synced` ficam fora da evidencia final e entram em secao de pendencias de evidencia fotografica.
 
 ## Modelo enriquecido da vistoria
 Campos adicionais do cadastro:

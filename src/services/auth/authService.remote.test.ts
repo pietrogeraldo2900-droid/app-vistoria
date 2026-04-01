@@ -50,6 +50,7 @@ describe("authService (remote mode)", () => {
       },
       configurable: true
     });
+    repositoryMode.reset();
     repositoryMode.set("local", { persist: false });
     repositoryMode.setFor("auth", "remote", { persist: false });
     await authService.bootstrap();

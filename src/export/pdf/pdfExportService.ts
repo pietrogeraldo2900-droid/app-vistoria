@@ -1,4 +1,11 @@
-import type { InspectionRecord, ReportLine } from "@/domain/types/inspection";
+﻿import inspectionItemsData from "@data/inspection_items.json";
+import type {
+  InspectionRecord,
+  InspectionStatus,
+  ItemPhoto,
+  ReportLine
+} from "@/domain/types/inspection";
+import { photoRepository } from "@/persistence/photoRepository";
 
 export interface PdfExportPayload {
   inspection: InspectionRecord;
@@ -15,11 +22,44 @@ interface GroupedLines {
   lines: ReportLine[];
 }
 
+interface InspectionItemsJson {
+  items: Array<{
+    key: string;
+    label: string;
+  }>;
+}
+
+interface PhotoEvidenceEntry {
+  locationName: string;
+  itemKey: string;
+  itemLabel: string;
+  status: InspectionStatus;
+  statusLabel: string;
+  photoName: string;
+  photoDataUrl: string;
+  mimeType: string;
+}
+
+interface PhotoEvidenceSkip {
+  locationName: string;
+  itemLabel: string;
+  statusLabel: string;
+  photoName: string;
+  reason: string;
+}
+
 const PAGE_MARGIN_X = 14;
 const PAGE_MARGIN_Y = 14;
 const PAGE_BOTTOM = 284;
 const MAX_LINE_WIDTH = 178;
 const LINE_HEIGHT = 5.4;
+
+const PHOTO_GRID_COLUMNS = 2;
+const PHOTO_GRID_GAP_X = 6;
+const PHOTO_GRID_GAP_Y = 6;
+const PHOTO_CARD_HEIGHT = 82;
+const PHOTO_THUMB_HEIGHT = 56;
+const PHOTO_CARD_PADDING = 2;
 
 const inspectionTypeLabelMap = {
   inicial: "Inicial",
@@ -27,6 +67,19 @@ const inspectionTypeLabelMap = {
   retorno: "Retorno",
   extraordinaria: "Extraordinaria"
 } as const;
+
+const statusLabelMap: Record<InspectionStatus, string> = {
+  conforme: "Conforme",
+  nao_conforme: "Nao conforme",
+  em_manutencao: "Em manutencao",
+  sem_acesso: "Sem acesso",
+  nao_testado: "Nao testado"
+};
+
+const inspectionCatalog = inspectionItemsData as InspectionItemsJson;
+const itemLabelByKey = new Map<string, string>(
+  inspectionCatalog.items.map((item) => [item.key, item.label])
+);
 
 const sanitizeFileNameSegment = (value: string): string => {
   const normalized = value
@@ -72,6 +125,171 @@ const formatNow = (): string =>
     timeStyle: "short"
   }).format(new Date());
 
+const formatInspectionDate = (value: string): string => {
+  if (!value || !value.trim()) {
+    return "-";
+  }
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(parsed);
+};
+
+const resolveItemLabel = (itemKey: string): string => itemLabelByKey.get(itemKey) ?? itemKey;
+
+const resolvePhotoSkipReason = (photo: ItemPhoto): string => {
+  if (photo.syncStatus === "pending") {
+    return photo.syncErrorMessage?.trim() || "Foto pendente de sincronizacao remota.";
+  }
+
+  if (photo.syncStatus === "failed") {
+    return photo.syncErrorMessage?.trim() || "Falha de sincronizacao remota da foto.";
+  }
+
+  return "Foto sem sincronizacao confirmada para evidencia final.";
+};
+
+const resolveImageFormat = (mimeType: string): "PNG" | "JPEG" => {
+  if (mimeType.toLowerCase().includes("png")) {
+    return "PNG";
+  }
+
+  return "JPEG";
+};
+
+const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  const chunkSize = 0x8000;
+
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    const chunk = bytes.subarray(index, index + chunkSize);
+    binary += String.fromCharCode(...chunk);
+  }
+
+  if (typeof btoa === "function") {
+    return btoa(binary);
+  }
+
+  const maybeBuffer = (globalThis as unknown as {
+    Buffer?: {
+      from(input: string, encoding: string): { toString(encoding: string): string };
+    };
+  }).Buffer;
+
+  if (maybeBuffer) {
+    return maybeBuffer.from(binary, "binary").toString("base64");
+  }
+
+  throw new Error("Nao foi possivel codificar blob em base64 para exportacao.");
+};
+
+const blobToDataUrl = async (blob: Blob): Promise<string> => {
+  if (typeof FileReader !== "undefined") {
+    return new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = () => reject(new Error("Falha ao processar blob da foto para PDF."));
+      reader.onload = () => resolve(String(reader.result));
+      reader.readAsDataURL(blob);
+    });
+  }
+
+  const base64 = arrayBufferToBase64(await blob.arrayBuffer());
+  const mimeType = blob.type || "application/octet-stream";
+  return `data:${mimeType};base64,${base64}`;
+};
+
+const loadImageSize = (dataUrl: string): Promise<{ width: number; height: number } | null> => {
+  if (typeof Image === "undefined") {
+    return Promise.resolve(null);
+  }
+
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve({ width: image.width, height: image.height });
+    image.onerror = () => resolve(null);
+    image.src = dataUrl;
+  });
+};
+
+const collectPhotoEvidence = async (
+  inspection: InspectionRecord
+): Promise<{ evidences: PhotoEvidenceEntry[]; skipped: PhotoEvidenceSkip[] }> => {
+  const evidences: PhotoEvidenceEntry[] = [];
+  const skipped: PhotoEvidenceSkip[] = [];
+
+  for (const location of inspection.locations) {
+    for (const item of location.items) {
+      const itemLabel = resolveItemLabel(item.itemKey);
+      const statusLabel = statusLabelMap[item.status];
+
+      for (const photo of item.photos) {
+        const baseSkipContext = {
+          locationName: location.name,
+          itemLabel,
+          statusLabel,
+          photoName: photo.name
+        };
+
+        if (photo.syncStatus !== "synced") {
+          skipped.push({
+            ...baseSkipContext,
+            reason: resolvePhotoSkipReason(photo)
+          });
+          continue;
+        }
+
+        const photoStorageKey = photo.storageKey || photo.id;
+        if (!photoStorageKey) {
+          skipped.push({
+            ...baseSkipContext,
+            reason: "Foto sem chave de armazenamento para recuperacao."
+          });
+          continue;
+        }
+
+        try {
+          const blob = await photoRepository.get(photoStorageKey);
+          if (!blob) {
+            skipped.push({
+              ...baseSkipContext,
+              reason: "Arquivo da foto nao encontrado no repositiorio de midia."
+            });
+            continue;
+          }
+
+          const photoDataUrl = await blobToDataUrl(blob);
+          evidences.push({
+            locationName: location.name,
+            itemKey: item.itemKey,
+            itemLabel,
+            status: item.status,
+            statusLabel,
+            photoName: photo.name,
+            photoDataUrl,
+            mimeType: photo.mimeType || blob.type || "image/jpeg"
+          });
+        } catch (error) {
+          const reason =
+            error instanceof Error && error.message.trim().length > 0
+              ? error.message
+              : "Falha ao carregar foto para evidência no PDF.";
+
+          skipped.push({
+            ...baseSkipContext,
+            reason
+          });
+        }
+      }
+    }
+  }
+
+  return { evidences, skipped };
+};
+
 export const pdfExportService = {
   preparePayload(inspection: InspectionRecord, reportLines: ReportLine[]): PdfExportPayload {
     return {
@@ -87,6 +305,8 @@ export const pdfExportService = {
     }
 
     const groupedLines = groupLinesByLocation(finalLines);
+    const photoEvidence = await collectPhotoEvidence(payload.inspection);
+
     const { jsPDF } = await import("jspdf");
     const doc = new jsPDF({
       format: "a4",
@@ -95,6 +315,10 @@ export const pdfExportService = {
     });
 
     const pageWidth = doc.internal.pageSize.getWidth();
+    const photoCardWidth =
+      (pageWidth - PAGE_MARGIN_X * 2 - PHOTO_GRID_GAP_X * (PHOTO_GRID_COLUMNS - 1)) /
+      PHOTO_GRID_COLUMNS;
+
     let cursorY = PAGE_MARGIN_Y;
 
     const ensureSpace = (requiredHeight: number): void => {
@@ -199,6 +423,147 @@ export const pdfExportService = {
       cursorY += 1;
     }
 
+    cursorY += 2;
+    writeWrappedText("EVIDENCIAS FOTOGRAFICAS", {
+      bold: true,
+      size: 11.5,
+      color: [15, 118, 110],
+      after: 1
+    });
+
+    if (photoEvidence.evidences.length === 0) {
+      writeWrappedText(
+        "Nenhuma evidencia fotografica sincronizada foi encontrada para esta vistoria.",
+        {
+          size: 10,
+          after: 1
+        }
+      );
+    } else {
+      let activeRowTop = cursorY;
+      let activeColumn = 0;
+
+      for (const evidence of photoEvidence.evidences) {
+        if (activeColumn === 0) {
+          ensureSpace(PHOTO_CARD_HEIGHT + PHOTO_GRID_GAP_Y);
+          activeRowTop = cursorY;
+        }
+
+        const cardX =
+          PAGE_MARGIN_X + activeColumn * (photoCardWidth + PHOTO_GRID_GAP_X);
+        const cardY = activeRowTop;
+
+        doc.setDrawColor(215, 220, 224);
+        doc.setFillColor(255, 255, 255);
+        doc.roundedRect(cardX, cardY, photoCardWidth, PHOTO_CARD_HEIGHT, 1.5, 1.5, "FD");
+
+        const imageX = cardX + PHOTO_CARD_PADDING;
+        const imageY = cardY + PHOTO_CARD_PADDING;
+        const imageWidth = photoCardWidth - PHOTO_CARD_PADDING * 2;
+        const imageHeight = PHOTO_THUMB_HEIGHT;
+
+        doc.setFillColor(245, 246, 247);
+        doc.rect(imageX, imageY, imageWidth, imageHeight, "F");
+
+        try {
+          const imageSize = await loadImageSize(evidence.photoDataUrl);
+          if (imageSize && imageSize.width > 0 && imageSize.height > 0) {
+            const scale = Math.min(
+              imageWidth / imageSize.width,
+              imageHeight / imageSize.height
+            );
+
+            const renderWidth = imageSize.width * scale;
+            const renderHeight = imageSize.height * scale;
+            const renderX = imageX + (imageWidth - renderWidth) / 2;
+            const renderY = imageY + (imageHeight - renderHeight) / 2;
+
+            doc.addImage(
+              evidence.photoDataUrl,
+              resolveImageFormat(evidence.mimeType),
+              renderX,
+              renderY,
+              renderWidth,
+              renderHeight
+            );
+          } else {
+            doc.addImage(
+              evidence.photoDataUrl,
+              resolveImageFormat(evidence.mimeType),
+              imageX,
+              imageY,
+              imageWidth,
+              imageHeight
+            );
+          }
+        } catch {
+          doc.setTextColor(142, 142, 142);
+          doc.setFont("helvetica", "normal");
+          doc.setFontSize(8.8);
+          doc.text("Falha ao renderizar foto", imageX + 2, imageY + 7);
+        }
+
+        const legend = [
+          evidence.locationName,
+          evidence.itemLabel,
+          evidence.statusLabel,
+          formatInspectionDate(payload.inspection.inspectionDate)
+        ].join(" | ");
+
+        doc.setTextColor(56, 58, 61);
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(8.5);
+
+        const legendLines = doc.splitTextToSize(legend, imageWidth);
+        const legendY = imageY + imageHeight + 4;
+        const maxLegendLines = 3;
+
+        legendLines.slice(0, maxLegendLines).forEach((line: string, index: number) => {
+          doc.text(line, imageX, legendY + index * 3.8);
+        });
+
+        doc.setTextColor(108, 117, 125);
+        doc.setFontSize(8);
+        const photoNameLines = doc.splitTextToSize(evidence.photoName, imageWidth);
+        doc.text(photoNameLines[0] ?? evidence.photoName, imageX, cardY + PHOTO_CARD_HEIGHT - 3);
+
+        if (activeColumn === PHOTO_GRID_COLUMNS - 1) {
+          cursorY = activeRowTop + PHOTO_CARD_HEIGHT + PHOTO_GRID_GAP_Y;
+          activeColumn = 0;
+        } else {
+          activeColumn += 1;
+        }
+      }
+
+      if (activeColumn !== 0) {
+        cursorY = activeRowTop + PHOTO_CARD_HEIGHT + PHOTO_GRID_GAP_Y;
+      }
+    }
+
+    if (photoEvidence.skipped.length > 0) {
+      cursorY += 1;
+      writeWrappedText("PENDENCIAS DE EVIDENCIA FOTOGRAFICA", {
+        bold: true,
+        size: 11,
+        color: [180, 83, 9],
+        after: 0.8
+      });
+      writeWrappedText(
+        "Fotos sem sincronizacao confirmada nao foram incluidas como evidencia final neste relatorio.",
+        {
+          size: 9.8,
+          after: 1
+        }
+      );
+
+      for (const skippedPhoto of photoEvidence.skipped) {
+        writeWrappedText(
+          `- ${skippedPhoto.locationName} | ${skippedPhoto.itemLabel} | ${skippedPhoto.statusLabel} | ${skippedPhoto.photoName}: ${skippedPhoto.reason}`,
+          { size: 9.3, after: 0.4 }
+        );
+      }
+    }
+
     const fileName = buildPdfFileName(payload.inspection);
     doc.save(fileName);
 
@@ -208,4 +573,3 @@ export const pdfExportService = {
     };
   }
 };
-
