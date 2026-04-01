@@ -14,6 +14,24 @@ npm run dev
 
 Abra: [http://localhost:5173](http://localhost:5173)
 
+## Modo apresentacao (cliente)
+Para preparar uma demonstracao previsivel:
+
+1. rode o app em modo local (`inspection` e `photo` em `local`)
+2. faca login como admin
+3. no Dashboard, clique em `Preparar demo`
+4. execute o roteiro em `docs/demo_playbook.md`
+
+O botao `Preparar demo` recarrega uma base padrao de apresentacao com:
+- 3 vistorias
+- locais e itens com combinacoes homologadas
+- fotos sincronizadas para evidencia no PDF
+
+Validacao rapida antes da reuniao:
+```bash
+npm run demo:check
+```
+
 ## Autenticacao e controle de acesso
 - Autenticacao local por e-mail e senha (MVP)
 - Solicitacao de cadastro com aprovacao administrativa
@@ -69,6 +87,9 @@ Cobertura atual de regra de negocio:
 - `docs/`: regras de PRT e documentacao de arquitetura.
 - `data/`: itens de inspecao e templates homologados.
 - `src/`: codigo da aplicacao em camadas.
+
+Playbook comercial:
+- `docs/demo_playbook.md`
 
 ## Preparacao para migracao futura a backend
 - Repositorios orientados por contrato em `src/persistence/contracts`

@@ -94,6 +94,11 @@ Campos adicionais do cadastro:
 - Remocao de fotos por item.
 - Bloqueio de duplicidades basicas para local e item no mesmo contexto.
 
+## Operacao de demonstracao comercial
+- `src/services/demo/demoSetupService.ts` prepara base de apresentacao com 1 clique no Dashboard.
+- O seed de demo e bloqueado fora de `inspection/photo` em modo local para evitar comportamento ambiguo em ambiente remoto.
+- O fluxo de demo nao altera regras da engine PRT; apenas monta dados de exemplo coerentes para apresentacao.
+
 ## Blindagem e validacao tecnica
 - `inspectionValidationService` valida item/status por regra tecnica antes de salvar.
 - Bloqueio de `conforme` sem criterios minimos.

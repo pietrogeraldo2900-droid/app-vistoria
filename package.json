@@ -9,6 +9,7 @@
     "start": "node ./server.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
+    "demo:check": "npm run test -- --run && npm run build",
     "preview": "vite preview",
     "audit:pack": "node ./scripts/audit-pack.mjs",
     "audit:pack:node": "node ./scripts/audit-pack.mjs --keep-temp",

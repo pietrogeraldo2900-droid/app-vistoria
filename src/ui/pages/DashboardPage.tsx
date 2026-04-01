@@ -4,19 +4,25 @@ import type { InspectionRecord } from "@/domain/types/inspection";
 import { formatDateTime } from "@/domain/utils/format";
 import { accessControlService } from "@/services/auth/accessControlService";
 import { authService } from "@/services/auth/authService";
+import { demoSetupService } from "@/services/demo/demoSetupService";
 import { inspectionService } from "@/services/inspection/inspectionService";
 import { SectionPanel } from "@/ui/components/SectionPanel";
 
 export const DashboardPage = (): ReactElement => {
   const [inspections, setInspections] = useState<InspectionRecord[]>([]);
+  const [dashboardFeedback, setDashboardFeedback] = useState("");
+  const [isPreparingDemo, setIsPreparingDemo] = useState(false);
+
+  const loadInspections = (): Promise<InspectionRecord[]> => inspectionService.listInspections();
 
   useEffect(() => {
     let isMounted = true;
 
-    void inspectionService.listInspections().then((records) => {
-      if (isMounted) {
-        setInspections(records);
+    void loadInspections().then((records) => {
+      if (!isMounted) {
+        return;
       }
+      setInspections(records);
     });
 
     return () => {
@@ -34,6 +40,29 @@ export const DashboardPage = (): ReactElement => {
     session,
     "inspection:edit"
   );
+  const canPrepareDemo = session?.role === "admin";
+  const demoAvailability = demoSetupService.getAvailability();
+
+  const handlePrepareDemo = async (): Promise<void> => {
+    setDashboardFeedback("");
+    setIsPreparingDemo(true);
+
+    try {
+      const summary = await demoSetupService.prepareDemoWorkspace();
+      setInspections(await loadInspections());
+      setDashboardFeedback(
+        `Base de demonstracao carregada: ${summary.inspectionsCreated} vistorias, ${summary.locationsCreated} locais, ${summary.itemsCreated} itens e ${summary.photosCreated} fotos sincronizadas.`
+      );
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message.trim().length > 0
+          ? error.message
+          : "Nao foi possivel preparar a base de demonstracao.";
+      setDashboardFeedback(message);
+    } finally {
+      setIsPreparingDemo(false);
+    }
+  };
 
   const totalLocations = inspections.reduce(
     (acc, inspection) => acc + inspection.locations.length,
@@ -63,6 +92,7 @@ export const DashboardPage = (): ReactElement => {
         subtitle="Resumo rapido para o time tecnico."
         delayMs={60}
       >
+        {dashboardFeedback ? <p className="feedback-message">{dashboardFeedback}</p> : null}
         <div className="stats-row">
           <article className="metric-tile">
             <span>Total de vistorias</span>
@@ -86,7 +116,22 @@ export const DashboardPage = (): ReactElement => {
           <Link className="btn btn-ghost" to="/history">
             Ver historico
           </Link>
+          {canPrepareDemo ? (
+            <button
+              className="btn btn-outline"
+              type="button"
+              onClick={() => {
+                void handlePrepareDemo();
+              }}
+              disabled={!demoAvailability.available || isPreparingDemo}
+            >
+              {isPreparingDemo ? "Preparando demo..." : "Preparar demo"}
+            </button>
+          ) : null}
         </div>
+        {!demoAvailability.available && canPrepareDemo ? (
+          <p className="empty-state small">{demoAvailability.reason}</p>
+        ) : null}
       </SectionPanel>
 
       <SectionPanel
