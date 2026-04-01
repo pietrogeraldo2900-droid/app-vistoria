@@ -1,0 +1,428 @@
+{
+  "templates": [
+    {
+      "item": "detector_fumaca",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - Deverá ser feita a instalação de detector de fumaça, conforme IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "detector_fumaca",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - Deverá ser feita a instalação de detector de fumaça."
+    },
+    {
+      "item": "extintor",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - Os extintores estão em conformidade com os requisitos estabelecidos na IT 21/2025 do Corpo de Bombeiros, atendendo aos critérios de pressurização, lacre de segurança, prazo de validade e identificação do selo de recarga do INMETRO."
+    },
+    {
+      "item": "extintor",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - Os extintores estão em conformidade, atendendo aos critérios de pressurização, lacre de segurança, prazo de validade e identificação do selo de recarga do INMETRO."
+    },
+    {
+      "item": "extintor",
+      "status": "nao_conforme",
+      "rule": "sem_lacre",
+      "state": "SP",
+      "template": "Local - Todos os extintores devem estar lacrados, com a pressão adequada para garantir seu devido funcionamento, conforme IT 21/2025."
+    },
+    {
+      "item": "extintor",
+      "status": "nao_conforme",
+      "rule": "sem_lacre",
+      "state": "RJ",
+      "template": "Local - Todos os extintores devem estar lacrados, com a pressão adequada para garantir seu devido funcionamento."
+    },
+    {
+      "item": "hidrante",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O hidrante encontra-se em conformidade, com todos os itens obrigatórios presentes no abrigo: esguicho regulável, mangueira com teste hidrostático válido, chave Storz e registro. Além disso, a sinalização está instalada de forma adequada. O conjunto atende aos requisitos estabelecidos pela IT 22/2025 e IT 20/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "hidrante",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O hidrante encontra-se em conformidade, com todos os itens obrigatórios presentes no abrigo: esguicho regulável, mangueira com teste hidrostático válido, chave Storz e registro. Além disso, a sinalização está instalada de forma adequada."
+    },
+    {
+      "item": "shaft_incendio",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - O shaft de incêndio deverá ser desobstruído, garantindo livre acesso aos equipamentos e dispositivos de combate a incêndio, conforme as exigências da IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "shaft_incendio",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - O shaft de incêndio deverá ser desobstruído, garantindo livre acesso aos equipamentos e dispositivos de combate a incêndio."
+    },
+    {
+      "item": "detector_fumaca",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O detector de fumaca encontra-se instalado e em condicoes operacionais, atendendo aos requisitos da IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "detector_fumaca",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O detector de fumaca encontra-se instalado e em condicoes operacionais."
+    },
+    {
+      "item": "extintor",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - Os extintores apresentam nao conformidade tecnica e devem ser regularizados para atendimento a IT 21/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "extintor",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - Os extintores apresentam nao conformidade tecnica e devem ser regularizados."
+    },
+    {
+      "item": "hidrante",
+      "status": "nao_conforme",
+      "state": "SP",
+      "rule": "abrigo_incompleto",
+      "template": "Local - O hidrante deve ser regularizado, pois o abrigo encontra-se incompleto, com ausencia de itens obrigatorios e sinalizacao. A condicao compromete a eficacia do combate a incendio e deve ser corrigida conforme IT 22/2025 e IT 20/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "hidrante",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "rule": "abrigo_incompleto",
+      "template": "Local - O hidrante deve ser regularizado, pois o abrigo encontra-se incompleto, com ausencia de itens obrigatorios e sinalizacao. A condicao compromete a eficacia do combate a incendio e deve ser corrigida."
+    },
+    {
+      "item": "iluminacao_emergencia",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A iluminacao de emergencia (IE) esta em conformidade com os requisitos da IT 18/2025 do Corpo de Bombeiros, garantindo funcionamento adequado em falta de energia."
+    },
+    {
+      "item": "iluminacao_emergencia",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A iluminacao de emergencia (IE) esta em conformidade, garantindo funcionamento adequado em falta de energia."
+    },
+    {
+      "item": "iluminacao_emergencia",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A iluminacao de emergencia apresenta falha de funcionamento e deve ser regularizada para atendimento a IT 18/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "iluminacao_emergencia",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A iluminacao de emergencia apresenta falha de funcionamento e deve ser regularizada."
+    },
+    {
+      "item": "sinalizacao",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A sinalizacao de seguranca encontra-se instalada e em conformidade com os requisitos da IT 20/2025."
+    },
+    {
+      "item": "sinalizacao",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A sinalizacao de seguranca encontra-se instalada e em conformidade."
+    },
+    {
+      "item": "sinalizacao",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - Deve ser realizada a sinalizacao conforme norma, com modelo fotoluminescente e identificacao do fabricante, conforme IT 20/2025."
+    },
+    {
+      "item": "sinalizacao",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - Deve ser realizada a sinalizacao conforme norma, com modelo fotoluminescente e identificacao do fabricante."
+    },
+    {
+      "item": "spk",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O sistema de chuveiros automaticos (SPK) encontra-se em conformidade com os parametros da NBR 10897 e IT 23/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "spk",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O sistema de chuveiros automaticos (SPK) encontra-se em conformidade com os parametros da NBR 10897."
+    },
+    {
+      "item": "spk",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - Devera efetuar a instalacao de chuveiros automaticos (SPK), conforme parametros da NBR 10897 e IT 23/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "spk",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - Devera efetuar a instalacao de chuveiros automaticos (SPK), conforme parametros da NBR 10897."
+    },
+    {
+      "item": "shaft_incendio",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O shaft de incendio encontra-se desobstruido, garantindo acesso aos equipamentos de combate a incendio, conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "shaft_incendio",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O shaft de incendio encontra-se desobstruido, garantindo acesso aos equipamentos de combate a incendio."
+    },
+    {
+      "item": "central_alarme",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A central de alarme encontra-se em conformidade, com painel ativo, sinalizacao sonora operante e bateria de backup funcional, conforme IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "central_alarme",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A central de alarme encontra-se em conformidade, com painel ativo, sinalizacao sonora operante e bateria de backup funcional."
+    },
+    {
+      "item": "central_alarme",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A central de alarme apresenta nao conformidade tecnica e deve ser regularizada conforme IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "central_alarme",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A central de alarme apresenta nao conformidade tecnica e deve ser regularizada."
+    },
+    {
+      "item": "acionador_manual",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O acionador manual encontra-se instalado, sinalizado e em funcionamento, atendendo a IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "acionador_manual",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O acionador manual encontra-se instalado, sinalizado e em funcionamento."
+    },
+    {
+      "item": "acionador_manual",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - O acionador manual apresenta nao conformidade tecnica e deve ser regularizado para atendimento a IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "acionador_manual",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - O acionador manual apresenta nao conformidade tecnica e deve ser regularizado."
+    },
+    {
+      "item": "detector_calor",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O detector de calor encontra-se instalado e em condicoes operacionais, atendendo aos requisitos da IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "detector_calor",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O detector de calor encontra-se instalado e em condicoes operacionais."
+    },
+    {
+      "item": "detector_calor",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - Devera ser feita a instalacao ou regularizacao do detector de calor, conforme IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "detector_calor",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - Devera ser feita a instalacao ou regularizacao do detector de calor."
+    },
+    {
+      "item": "recalque",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O recalque encontra-se em conformidade, com valvula funcional, tampa presente e sinalizacao adequada, conforme IT 22/2025 e IT 20/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "recalque",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O recalque encontra-se em conformidade, com valvula funcional, tampa presente e sinalizacao adequada."
+    },
+    {
+      "item": "recalque",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - O recalque apresenta nao conformidade tecnica e deve ser regularizado para atendimento a IT 22/2025 e IT 20/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "recalque",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - O recalque apresenta nao conformidade tecnica e deve ser regularizado."
+    },
+    {
+      "item": "bomba_principal",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A bomba principal encontra-se em conformidade, com funcionamento adequado, pressao compativel e acionamento automatico operacional, conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "bomba_principal",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A bomba principal encontra-se em conformidade, com funcionamento adequado, pressao compativel e acionamento automatico operacional."
+    },
+    {
+      "item": "bomba_principal",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A bomba principal apresenta nao conformidade tecnica e deve ser regularizada conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "bomba_principal",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A bomba principal apresenta nao conformidade tecnica e deve ser regularizada."
+    },
+    {
+      "item": "bomba_jockey",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A bomba jockey encontra-se em conformidade, com funcionamento regular e pressao adequada para suporte ao sistema, conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "bomba_jockey",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A bomba jockey encontra-se em conformidade, com funcionamento regular e pressao adequada para suporte ao sistema."
+    },
+    {
+      "item": "bomba_jockey",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A bomba jockey apresenta nao conformidade tecnica e deve ser regularizada conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "bomba_jockey",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A bomba jockey apresenta nao conformidade tecnica e deve ser regularizada."
+    },
+    {
+      "item": "pcf",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A porta corta-fogo (PCF) encontra-se em conformidade, com fechamento automatico, sem obstrucoes e sinalizacao adequada, conforme IT 11/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "pcf",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A porta corta-fogo (PCF) encontra-se em conformidade, com fechamento automatico, sem obstrucoes e sinalizacao adequada."
+    },
+    {
+      "item": "pcf",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A porta corta-fogo (PCF) apresenta nao conformidade tecnica e deve ser regularizada conforme IT 11/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "pcf",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A porta corta-fogo (PCF) apresenta nao conformidade tecnica e deve ser regularizada."
+    },
+    {
+      "item": "eletroima",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - O eletroima encontra-se em conformidade, com retencao de porta funcional e liberacao no alarme validada, conforme IT 11/2025 e IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "eletroima",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - O eletroima encontra-se em conformidade, com retencao de porta funcional e liberacao no alarme validada."
+    },
+    {
+      "item": "eletroima",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - O eletroima apresenta nao conformidade tecnica e deve ser regularizado conforme IT 11/2025 e IT 19/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "eletroima",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - O eletroima apresenta nao conformidade tecnica e deve ser regularizado."
+    },
+    {
+      "item": "escada_pressurizada",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A escada pressurizada encontra-se em conformidade, com pressurizacao operacional e vedacao adequada, conforme IT 13/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "escada_pressurizada",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A escada pressurizada encontra-se em conformidade, com pressurizacao operacional e vedacao adequada."
+    },
+    {
+      "item": "escada_pressurizada",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A escada pressurizada apresenta nao conformidade tecnica e deve ser regularizada conforme IT 13/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "escada_pressurizada",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A escada pressurizada apresenta nao conformidade tecnica e deve ser regularizada."
+    },
+    {
+      "item": "rti",
+      "status": "conforme",
+      "state": "SP",
+      "template": "Local - A reserva tecnica de incendio (RTI) encontra-se em conformidade, com volume minimo e acesso desobstruido, conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "rti",
+      "status": "conforme",
+      "state": "RJ",
+      "template": "Local - A reserva tecnica de incendio (RTI) encontra-se em conformidade, com volume minimo e acesso desobstruido."
+    },
+    {
+      "item": "rti",
+      "status": "nao_conforme",
+      "state": "SP",
+      "template": "Local - A reserva tecnica de incendio (RTI) apresenta nao conformidade tecnica e deve ser regularizada conforme IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "rti",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "template": "Local - A reserva tecnica de incendio (RTI) apresenta nao conformidade tecnica e deve ser regularizada."
+    }
+  ]
+}

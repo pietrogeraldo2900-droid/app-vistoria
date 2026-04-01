@@ -1,0 +1,153 @@
+{
+  "statuses": [
+    "conforme",
+    "nao_conforme",
+    "em_manutencao",
+    "sem_acesso",
+    "nao_testado"
+  ],
+  "items": [
+    {
+      "key": "extintor",
+      "label": "Extintores",
+      "fields": [
+        "lacrado",
+        "validade_recarga",
+        "conforme_pressao",
+        "selo_inmetro"
+      ]
+    },
+    {
+      "key": "hidrante",
+      "label": "Hidrantes",
+      "fields": [
+        "possui_esguicho",
+        "possui_chave_storz",
+        "possui_registro",
+        "sinalizacao_instalada",
+        "mangueira_teste_hidrostatico_validade",
+        "abrigo_incompleto"
+      ]
+    },
+    {
+      "key": "detector_fumaca",
+      "label": "Detector de fumaca",
+      "fields": [
+        "instalado"
+      ]
+    },
+    {
+      "key": "detector_calor",
+      "label": "Detector de calor",
+      "fields": [
+        "instalado"
+      ]
+    },
+    {
+      "key": "central_alarme",
+      "label": "Central de alarme",
+      "fields": [
+        "painel_ativo",
+        "sirene_operante",
+        "bateria_backup_ok"
+      ]
+    },
+    {
+      "key": "acionador_manual",
+      "label": "Acionador manual",
+      "fields": [
+        "instalado",
+        "sinalizado",
+        "funcionamento_ok"
+      ]
+    },
+    {
+      "key": "iluminacao_emergencia",
+      "label": "Iluminacao de emergencia",
+      "fields": [
+        "funcionamento_ok"
+      ]
+    },
+    {
+      "key": "sinalizacao",
+      "label": "Sinalizacao",
+      "fields": [
+        "instalada",
+        "tipo_fotoluminescente"
+      ]
+    },
+    {
+      "key": "recalque",
+      "label": "Recalque",
+      "fields": [
+        "valvula_funcional",
+        "tampa_presente",
+        "sinalizacao_instalada"
+      ]
+    },
+    {
+      "key": "bomba_principal",
+      "label": "Bomba principal",
+      "fields": [
+        "funcionamento_ok",
+        "pressao_adequada",
+        "acionamento_automatico_ok"
+      ]
+    },
+    {
+      "key": "bomba_jockey",
+      "label": "Bomba jockey",
+      "fields": [
+        "funcionamento_ok",
+        "pressao_adequada"
+      ]
+    },
+    {
+      "key": "spk",
+      "label": "Chuveiros automaticos (SPK)",
+      "fields": [
+        "instalado"
+      ]
+    },
+    {
+      "key": "pcf",
+      "label": "Porta corta-fogo (PCF)",
+      "fields": [
+        "fechamento_automatico",
+        "sem_obstrucao",
+        "sinalizacao_instalada"
+      ]
+    },
+    {
+      "key": "eletroima",
+      "label": "Eletroima",
+      "fields": [
+        "retencao_porta_ok",
+        "libera_no_alarme"
+      ]
+    },
+    {
+      "key": "shaft_incendio",
+      "label": "Shaft de incendio",
+      "fields": [
+        "obstruido"
+      ]
+    },
+    {
+      "key": "escada_pressurizada",
+      "label": "Escada pressurizada",
+      "fields": [
+        "pressurizacao_ok",
+        "porta_estanque_ok"
+      ]
+    },
+    {
+      "key": "rti",
+      "label": "RTI",
+      "fields": [
+        "volume_reserva_ok",
+        "acesso_desobstruido"
+      ]
+    }
+  ]
+}

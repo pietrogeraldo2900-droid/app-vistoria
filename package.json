@@ -1,0 +1,44 @@
+{
+  "name": "app-vistoria",
+  "private": true,
+  "version": "0.1.0",
+  "description": "MVP mobile-first de vistoria tecnica com geracao automatica de PRT.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.json && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "preview": "vite preview",
+    "audit:pack": "node ./scripts/audit-pack.mjs",
+    "audit:pack:node": "node ./scripts/audit-pack.mjs --keep-temp",
+    "audit:pack:ps": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/audit-pack.ps1 -KeepTemp"
+  },
+  "keywords": [
+    "vistoria",
+    "prt",
+    "react",
+    "vite"
+  ],
+  "author": "app-vistoria",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "jspdf": "^4.2.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "archiver": "^7.0.1",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.3",
+    "vitest": "^4.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
