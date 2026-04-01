@@ -5,6 +5,7 @@
   "description": "MVP mobile-first de vistoria tecnica com geracao automatica de PRT.",
   "scripts": {
     "dev": "vite",
+    "backend:dev": "node ./backend/server.mjs",
     "build": "tsc -p tsconfig.json && vite build",
     "start": "node ./server.mjs",
     "test": "vitest run",
@@ -27,6 +28,7 @@
   "dependencies": {
     "express": "^5.1.0",
     "jspdf": "^4.2.1",
+    "multer": "^2.0.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.4"
@@ -37,6 +39,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "archiver": "^7.0.1",
+    "supertest": "^7.2.2",
     "typescript": "^6.0.2",
     "vite": "^8.0.3",
     "vitest": "^4.1.2"

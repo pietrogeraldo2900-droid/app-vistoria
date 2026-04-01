@@ -3,6 +3,10 @@
 ## Objetivo
 Definir os contratos HTTP esperados para a futura migracao de persistencia e autenticacao para backend, sem remover o funcionamento local do MVP.
 
+Status atual:
+- estes contratos ja possuem implementacao local real em `backend/` (API Node/Express).
+- objetivo desta implementacao: validar integracao remota ponta a ponta sem desmontar fallback local do MVP.
+
 ## Convencoes gerais
 - Base URL sugerida: `/api/v1`
 - Formato: `application/json`
@@ -243,6 +247,7 @@ Response 204.
 - Binario de imagem continua fora de `inspections`, via endpoints de `media/photos`.
 - Estado local de retry (`retryDataAvailable` e cache local de blob) e interno do cliente e nao faz parte do contrato HTTP.
 - Isso evita payload excessivo em `inspections` e facilita futura troca de provider de storage.
+- a API atual rejeita payload agregado com binario (`data_url`/campos locais de retry) em `inspections` para manter contrato limpo.
 
 ## 5. Regras de integracao com PRT
 - Backend nao deve gerar texto livre para relatorio.

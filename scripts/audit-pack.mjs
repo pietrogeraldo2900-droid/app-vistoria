@@ -33,7 +33,7 @@ const rootFiles = new Set([
   ".gitignore"
 ]);
 
-const includeDirs = ["docs", "data", "src", "scripts"];
+const includeDirs = ["docs", "data", "src", "scripts", "backend"];
 
 const excludedDirNames = new Set([
   "node_modules",

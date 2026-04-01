@@ -45,6 +45,7 @@ Comportamento:
 - `authService.register` no modo remoto envia solicitacao remota.
 - `authService.logout` no modo remoto exige `refreshToken` e faz chamada remota antes de limpar sessao local.
 - sem `VITE_API_BASE_URL`, o gateway remoto gera erro controlado explicito.
+- implementacao local de referencia em `backend/` para testes de integracao sem depender de API externa.
 
 Operacoes ainda locais nesta fase:
 - bootstrap inicial do admin do MVP

@@ -16,6 +16,7 @@ Implementar um app mobile-first de vistoria tecnica com geracao automatica de PR
 - `src/persistence`: contratos e implementacoes de persistencia.
 - `src/export`: exportacao e formatacao do relatorio em PDF.
 - `src/domain`: modelos de dados e utilitarios de dominio.
+- `backend`: API Node/Express para integracao remota real por fatias.
 
 ## Persistencia por contrato
 - `src/persistence/contracts`: interfaces de repositorio para auth, vistoria e fotos.
@@ -44,6 +45,13 @@ Adapters remotos no estado atual:
 - `auth`: usa `backendGateway` real para `login`, `register-request`, `logout`, `list users`, `approve`, `reject` e `update role`.
 - sem `VITE_API_BASE_URL`, o gateway remoto segue bloqueado com erro controlado.
 - objetivo: integrar por fatias sem quebrar o MVP local.
+
+Implementacao backend atual (etapa 1):
+- `backend/server.mjs`: bootstrap HTTP da API.
+- `backend/app.mjs`: rotas REST em `/api/v1`.
+- `backend/store.mjs`: persistencia simples em JSON (`.backend-data/db.json`).
+- `backend/security.mjs`: hash/salt e tokens de sessao.
+- armazenamento de fotos em `.backend-data/media`.
 
 ## Fluxo principal do MVP
 1. Autenticacao (local por padrao; remota por fatia quando habilitada por modo).

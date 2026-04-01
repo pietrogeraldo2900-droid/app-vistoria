@@ -30,7 +30,7 @@ $viteConfigs = Get-ChildItem -Path $ProjectRoot -File -Filter "vite.config.*" -E
   Select-Object -ExpandProperty Name
 $rootFiles += $viteConfigs
 
-$includeDirs = @("docs", "data", "src", "scripts")
+$includeDirs = @("docs", "data", "src", "scripts", "backend")
 $publicPath = Join-Path $ProjectRoot "public"
 if (Test-Path -LiteralPath $publicPath -PathType Container) {
   $publicFiles = (Get-ChildItem -Path $publicPath -Recurse -File -ErrorAction SilentlyContinue | Measure-Object).Count

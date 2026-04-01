@@ -14,6 +14,36 @@ npm run dev
 
 Abra: [http://localhost:5173](http://localhost:5173)
 
+## Backend de integracao remota (etapa 1 real)
+Foi adicionada uma API Node/Express em `backend/` com contratos de:
+- auth (`/auth/login`, `/auth/refresh`, `/auth/logout`)
+- users/acessos (`/users/register-request`, `/users`, `/users/{id}`, `/approve`, `/reject`, `/role`)
+- inspections agregadas (`/inspections`, `/inspections/{id}`)
+- photos binarias (`/media/photos`)
+
+Rodar frontend + backend local:
+1. terminal A:
+```bash
+npm run backend:dev
+```
+2. terminal B:
+```bash
+npm run dev
+```
+
+Para testar frontend em modo remoto local, ajuste `.env`:
+```env
+VITE_REPOSITORY_MODE=remote
+VITE_REPOSITORY_MODE_AUTH=remote
+VITE_REPOSITORY_MODE_INSPECTION=remote
+VITE_REPOSITORY_MODE_PHOTO=remote
+VITE_API_BASE_URL=http://localhost:4000/api/v1
+```
+
+Credencial bootstrap do backend local:
+- E-mail: `admin@app-vistoria.local`
+- Senha: `Admin@123`
+
 ## Modo apresentacao (cliente)
 Para preparar uma demonstracao previsivel:
 
