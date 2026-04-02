@@ -6,6 +6,7 @@ dist/
 coverage/
 audit_out/
 .backend-data/
+tmp_*/
 
 # Logs
 npm-debug.log*
