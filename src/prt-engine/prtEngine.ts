@@ -4,6 +4,11 @@ import type {
   StateCode
 } from "@/domain/types/inspection";
 import {
+  formatMonthYearForReport,
+  isMonthYearExpired,
+  isMonthYearValid
+} from "@/domain/utils/monthYear";
+import {
   MISSING_HOMOLOGATED_TEMPLATE_REASON,
   resolveFallbackTemplate
 } from "@/prt-engine/fallbackTemplates";
@@ -29,11 +34,6 @@ const resolveRule = (
   status: InspectionStatus,
   fieldValues: InspectionFieldValues
 ): string | undefined => {
-  const hasMonthYear = (fieldName: string): boolean => {
-    const value = fieldValues[fieldName];
-    return typeof value === "string" && value.trim().length > 0;
-  };
-
   if (
     itemKey === "extintor" &&
     status === "nao_conforme" &&
@@ -45,7 +45,7 @@ const resolveRule = (
   if (
     itemKey === "extintor" &&
     status === "conforme" &&
-    hasMonthYear("validade_recarga")
+    isMonthYearValid(fieldValues.validade_recarga)
   ) {
     return "validade_vigente";
   }
@@ -53,7 +53,7 @@ const resolveRule = (
   if (
     itemKey === "extintor" &&
     status === "nao_conforme" &&
-    hasMonthYear("validade_recarga")
+    isMonthYearExpired(fieldValues.validade_recarga)
   ) {
     return "validade_vencida";
   }
@@ -69,9 +69,17 @@ const resolveRule = (
   if (
     itemKey === "hidrante" &&
     status === "conforme" &&
-    hasMonthYear("mangueira_teste_hidrostatico_validade")
+    isMonthYearValid(fieldValues.mangueira_teste_hidrostatico_validade)
   ) {
     return "mangueira_teste_hidrostatico_valido";
+  }
+
+  if (
+    itemKey === "hidrante" &&
+    status === "nao_conforme" &&
+    isMonthYearExpired(fieldValues.mangueira_teste_hidrostatico_validade)
+  ) {
+    return "mangueira_teste_hidrostatico_vencido";
   }
 
   if (
@@ -96,9 +104,9 @@ const resolveMonthYearPlaceholder = (fieldValues: InspectionFieldValues): string
   ];
 
   for (const field of monthYearFields) {
-    const value = fieldValues[field];
-    if (value && value.trim().length > 0) {
-      return value;
+    const formatted = formatMonthYearForReport(fieldValues[field]);
+    if (formatted && formatted.length > 0) {
+      return formatted;
     }
   }
 

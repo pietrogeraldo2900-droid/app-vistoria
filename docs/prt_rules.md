@@ -194,7 +194,16 @@ Campos possíveis:
 
 ---
 
-### 7.11 Iluminação de emergência conforme
+### 7.11 Mangueira com teste hidrostático vencido
+#### São Paulo
+`Local - Mangueira possui teste hidrostático VENCIDO em [mês/ano], devendo ser regularizada para atendimento à IT 22/2025 do Corpo de Bombeiros.`
+
+#### Rio de Janeiro
+`Local - Mangueira possui teste hidrostático VENCIDO em [mês/ano], devendo ser regularizada.`
+
+---
+
+### 7.12 Iluminação de emergência conforme
 #### São Paulo
 `Local - A iluminação de emergência (IE) está em conformidade com os requisitos da IT 18/2025 do Corpo de Bombeiros, garantindo o adequado funcionamento em situações de falta de energia.`
 
@@ -203,7 +212,7 @@ Campos possíveis:
 
 ---
 
-### 7.12 SPK + detector de fumaça
+### 7.13 SPK + detector de fumaça
 #### São Paulo
 `Local - Deverá efetuar a instalação de chuveiros automáticos (SPK), conforme parâmetros da NBR 10897 e IT 23/2025 do Corpo de Bombeiros. Além disso, deverá ser feita a instalação de detector de fumaça, conforme IT 19/2025 do Corpo de Bombeiros.`
 
@@ -212,7 +221,7 @@ Campos possíveis:
 
 ---
 
-### 7.13 Shaft de incêndio obstruído
+### 7.14 Shaft de incêndio obstruído
 #### São Paulo
 `Local - O shaft de incêndio deverá ser desobstruído, garantindo livre acesso aos equipamentos e dispositivos de combate a incêndio, conforme as exigências da IT 22/2025 do Corpo de Bombeiros.`
 

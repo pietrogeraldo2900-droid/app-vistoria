@@ -116,6 +116,26 @@ describe("inspectionValidationService", () => {
     );
   });
 
+  it("permite hidrante nao_conforme com teste hidrostático vencido", () => {
+    const result = inspectionValidationService.validateItemInput({
+      itemKey: "hidrante",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Shaft de incendio",
+      fieldValues: {
+        possui_esguicho: "sim",
+        possui_chave_storz: "sim",
+        possui_registro: "sim",
+        sinalizacao_instalada: "sim",
+        abrigo_incompleto: "nao",
+        mangueira_teste_hidrostatico_validade: "2026-01"
+      }
+    });
+
+    expect(result.isValid).toBe(true);
+    expect(result.issues).toHaveLength(0);
+  });
+
   it("bloqueia combinacao sem template homologado como pendencia tecnica interna", () => {
     const result = inspectionValidationService.validateItemInput({
       itemKey: "item_inexistente",

@@ -3,6 +3,7 @@ import type {
   InspectionStatus,
   StateCode
 } from "@/domain/types/inspection";
+import { isMonthYearValid } from "@/domain/utils/monthYear";
 import { prtEngine } from "@/prt-engine/prtEngine";
 
 type ExpectedCondition = "sim" | "nao" | "month_valid" | "required";
@@ -233,40 +234,6 @@ const itemRules: Record<string, ItemValidationRule> = {
 
 const isBlank = (value: string | undefined): boolean => !value || !value.trim();
 
-const parseMonthValue = (value: string | undefined): { year: number; month: number } | null => {
-  if (!value) {
-    return null;
-  }
-
-  const normalized = value.trim();
-  const isoMatch = normalized.match(/^(\d{4})-(\d{2})$/);
-  if (isoMatch) {
-    return { year: Number(isoMatch[1]), month: Number(isoMatch[2]) };
-  }
-
-  const brMatch = normalized.match(/^(\d{2})\/(\d{4})$/);
-  if (brMatch) {
-    return { year: Number(brMatch[2]), month: Number(brMatch[1]) };
-  }
-
-  return null;
-};
-
-const isMonthValid = (value: string | undefined): boolean => {
-  const parsed = parseMonthValue(value);
-  if (!parsed) {
-    return false;
-  }
-  if (parsed.month < 1 || parsed.month > 12) {
-    return false;
-  }
-
-  const now = new Date();
-  const currentYearMonth = now.getFullYear() * 100 + (now.getMonth() + 1);
-  const targetYearMonth = parsed.year * 100 + parsed.month;
-  return targetYearMonth >= currentYearMonth;
-};
-
 const matchesCondition = (value: string | undefined, condition: ExpectedCondition): boolean => {
   if (condition === "required") {
     return !isBlank(value);
@@ -277,7 +244,7 @@ const matchesCondition = (value: string | undefined, condition: ExpectedConditio
   if (condition === "nao") {
     return value === "nao";
   }
-  return isMonthValid(value);
+  return isMonthYearValid(value);
 };
 
 const formatConformRuleMessage = (field: string): string =>

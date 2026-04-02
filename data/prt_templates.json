@@ -481,6 +481,20 @@
       "template": "Local - Mangueira possui teste hidrostático VÁLIDO até [mês/ano]."
     },
     {
+      "item": "hidrante",
+      "status": "nao_conforme",
+      "state": "SP",
+      "rule": "mangueira_teste_hidrostatico_vencido",
+      "template": "Local - Mangueira possui teste hidrostático VENCIDO em [mês/ano], devendo ser regularizada para atendimento à IT 22/2025 do Corpo de Bombeiros."
+    },
+    {
+      "item": "hidrante",
+      "status": "nao_conforme",
+      "state": "RJ",
+      "rule": "mangueira_teste_hidrostatico_vencido",
+      "template": "Local - Mangueira possui teste hidrostático VENCIDO em [mês/ano], devendo ser regularizada."
+    },
+    {
       "item": "spk",
       "status": "nao_conforme",
       "state": "SP",

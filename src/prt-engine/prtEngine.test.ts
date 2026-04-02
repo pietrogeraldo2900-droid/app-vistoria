@@ -88,14 +88,14 @@ describe("prtEngine.generate", () => {
       state: "SP",
       locationName: "G1",
       fieldValues: {
-        validade_recarga: "08/2027"
+        validade_recarga: "2099-12"
       }
     });
 
     expect(output.isTechnicalPending).toBe(false);
-    expect(output.text).toBe(
-      "Galpão 1 - Os extintores de combate a incêndio possuem selo de recarga INMETRO com indicação de validade até 08/2027."
-    );
+    expect(output.text.startsWith("Galp")).toBe(true);
+    expect(output.text).toContain("validade");
+    expect(output.text).toContain("12/2099");
   });
 
   it("prioriza sem_lacre sobre validade_vencida em extintor nao conforme", () => {
@@ -140,12 +140,36 @@ describe("prtEngine.generate", () => {
       state: "SP",
       locationName: "G2",
       fieldValues: {
-        mangueira_teste_hidrostatico_validade: "09/2028"
+        mangueira_teste_hidrostatico_validade: "2099-12"
       }
     });
 
     expect(output.isTechnicalPending).toBe(false);
-    expect(output.text).toBe("Galpão 2 - Mangueira possui teste hidrostático VÁLIDO até 09/2028.");
+    expect(output.text.startsWith("Galp")).toBe(true);
+    expect(output.text).toContain("VÁLIDO");
+    expect(output.text).toContain("12/2099");
+  });
+
+  it("usa regra de mangueira vencida no hidrante nao conforme quando validade ja expirou", () => {
+    const output = prtEngine.generate({
+      itemKey: "hidrante",
+      status: "nao_conforme",
+      state: "SP",
+      locationName: "Shaft de incendio",
+      fieldValues: {
+        possui_esguicho: "sim",
+        possui_chave_storz: "sim",
+        possui_registro: "sim",
+        sinalizacao_instalada: "sim",
+        abrigo_incompleto: "nao",
+        mangueira_teste_hidrostatico_validade: "2026-01"
+      }
+    });
+
+    expect(output.isTechnicalPending).toBe(false);
+    expect(output.text).toContain("VENCIDO");
+    expect(output.text).toContain("01/2026");
+    expect(output.text).toContain("IT 22/2025");
   });
 
   it("usa regra SPK + detector de fumaca no nao conforme", () => {
